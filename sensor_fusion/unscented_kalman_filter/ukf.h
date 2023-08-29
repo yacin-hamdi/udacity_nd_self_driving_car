@@ -12,6 +12,7 @@ public:
 	void init();
 
 	void GenerateSigmaPoints(MatrixXd* Xsig_out);
+	void AugmentedSigmaPoints(MatrixXd* Xsig_out);
 };
 
 

@@ -8,7 +8,7 @@ using Eigen::MatrixXd;
 int main() {
 	UKF ukf;
 	MatrixXd Xsig(5, 11);
-	ukf.GenerateSigmaPoints(&Xsig);
+	ukf.AugmentedSigmaPoints(&Xsig);
 
 	std::cout << "Xsig=" << std::endl << Xsig << std::endl;
 
