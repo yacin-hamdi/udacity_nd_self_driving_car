@@ -7,10 +7,9 @@ using Eigen::MatrixXd;
 
 int main() {
 	UKF ukf;
-	MatrixXd Xsig(5, 11);
-	ukf.AugmentedSigmaPoints(&Xsig);
+	MatrixXd Xsig(15, 5);
+	ukf.SigmaPointPrediction(&Xsig);
 
-	std::cout << "Xsig=" << std::endl << Xsig << std::endl;
 
 	return 0;
 }
