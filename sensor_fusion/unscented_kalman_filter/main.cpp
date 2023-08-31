@@ -7,8 +7,9 @@ using Eigen::MatrixXd;
 
 int main() {
 	UKF ukf;
-	MatrixXd Xsig(15, 5);
-	ukf.SigmaPointPrediction(&Xsig);
+	VectorXd x(5);
+	MatrixXd P(5, 5);
+	ukf.PredictMeanAndCovariance(&x, &P);
 
 
 	return 0;

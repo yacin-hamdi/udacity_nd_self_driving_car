@@ -14,6 +14,7 @@ public:
 	void GenerateSigmaPoints(MatrixXd* Xsig_out);
 	void AugmentedSigmaPoints(MatrixXd* Xsig_out);
 	void SigmaPointPrediction(MatrixXd* Xsig_out);
+	void PredictMeanAndCovariance(VectorXd* x_out, MatrixXd* p_out);
 };
 
 
