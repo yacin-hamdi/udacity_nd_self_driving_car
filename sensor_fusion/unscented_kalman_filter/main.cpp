@@ -9,7 +9,7 @@ int main() {
 	UKF ukf;
 	VectorXd x(5);
 	MatrixXd P(5, 5);
-	ukf.PredictMeanAndCovariance(&x, &P);
+	ukf.UpdateState(&x, &P);
 
 
 	return 0;
