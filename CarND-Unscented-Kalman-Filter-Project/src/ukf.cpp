@@ -101,8 +101,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
 			double phi = meas_package.raw_measurements_[1];
 			double rho_d = meas_package.raw_measurements_[2]; 
 
-			px = rho * cos(phi);
-			py = rho * sin(phi);
+			double px = rho * cos(phi);
+			double py = rho * sin(phi);
 
 			if (px < 0.0001)
 				px = 0.0001;
@@ -142,7 +142,56 @@ void UKF::Prediction(double delta_t) {
 		Xsig_aug.col(i + n_aug_ + 1) = x_aug - lam_A.col(i);
 	}
 
-	
+
+	for (int i = 0; i < 2 * n_aug_ + 1; i++) {
+		double px = Xsig_aug(0, i);
+		double py = Xsig_aug(1, i);
+		double v = Xsig_aug(2, i);
+		double yaw = Xsig_aug(3, i);
+		double yawd = Xsig_aug(4, i);
+		double nu_a = Xsig_aug(5, i);
+		double nu_yawdd = Xsig_aug(6, i);
+
+		double px_pred;
+		double py_pred;
+		double pred_v = v;
+		double pred_yaw = yawd * delta_t;
+		double pred_yawd = yawd;
+		if (fabs(yawd) < 0.0001) {
+			px_pred = v * cos(yaw) * delta_t;
+			py_pred = v * sin(yaw) * delta_t;
+		}
+		else {
+			px_pred = px + (v / yawd) * (sin(yaw + yawd * delta_t) - sin(yaw));
+			py_pred = py + (v / yawd) * (cos(yaw) - cos(yaw + yawd * delta_t));
+		}
+
+		px_pred += 0.5 * delta_t * delta_t * cos(yaw) * nu_a;
+		py_pred += 0.5 * delta_t * delta_t * sin(yaw) * nu_a;
+		pred_v += delta_t * nu_a;
+		pred_yaw += delta_t * delta_t * nu_yawdd;
+		pred_yawd += delta_t * nu_yawdd;
+
+		Xsig_pred_(0, i) = px_pred;
+		Xsig_pred_(1, i) = py_pred;
+		Xsig_pred_(2, i) = pred_v;
+		Xsig_pred_(3, i) = pred_yaw;
+		Xsig_pred_(4, i) = pred_yawd;
+
+	}
+
+	for (int i = 0; i < 2 * n_aug_ + 1; i++) {
+		x_ += weights_(i) * Xsig_pred_.col(i);
+	}
+
+	for (int i = 0; i < 2 * n_aug_ + 1; i++) {
+		VectorXd x_diff = Xsig_pred_.col(i) - x_;
+
+		while (x_diff(3) > M_PI) x_diff(3) -= 2 * M_PI;
+		while (x_diff(3) < -M_PI) x_diff(3) += 2 * M_PI;
+
+		P_ += weights_(i) * x_diff * x_diff.transpose();
+	}
 
 }
 
