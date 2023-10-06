@@ -58,6 +58,43 @@ inline double dist(double x1, double y1, double x2, double y2) {
   return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
+inline int minIdx(std::vector<double> vec) {
+    double min = 100;
+    int idx;
+    for (unsigned int i = 0; i < vec.size(); i++) {
+        if (vec[i] < min) {
+            min = vec[i];
+            idx = i;
+        }
+    }
+
+    return idx;
+}
+
+inline void lockIdx(std::vector<std::vector<double>>& vec, int idx) {
+    double lock = 1000;
+    for (unsigned int i = 0; i < vec.size(); i++) {
+        for (unsigned int j = 0; j < vec[i].size(); j++) {
+            vec[i][idx] = 1000;
+        }
+    }
+}
+
+inline void toMapCoordinate(vector<LandmarkObs>& observations, 
+    double xp, double yp, double theta) {
+
+    double xm, ym, xc, yc;
+    for (unsigned int j = 0; j < observations.size(); j++) {
+        xc = observations[j].x;
+        yc = observations[j].y;
+        xm = xp + (cos(theta) * xc) - (sin(theta) * yc);
+        ym = yp + (sin(theta) * xc) + (cos(theta) * yc);
+        observations[j].x = xm;
+        observations[j].y = ym;
+    }
+
+}
+
 /**
  * Computes the error between ground truth and particle filter data.
  * @param (gt_x, gt_y, gt_theta) x, y and theta of ground truth
