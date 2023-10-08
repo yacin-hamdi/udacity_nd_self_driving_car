@@ -80,7 +80,7 @@ inline void lockIdx(std::vector<std::vector<double>>& vec, int idx) {
     }
 }
 
-inline void toMapCoordinate(vector<LandmarkObs>& observations, 
+inline void toMapCoordinate(std::vector<LandmarkObs>& observations, 
     double xp, double yp, double theta) {
 
     double xm, ym, xc, yc;
@@ -93,6 +93,16 @@ inline void toMapCoordinate(vector<LandmarkObs>& observations,
         observations[j].y = ym;
     }
 
+}
+
+inline double multivariateGauss(double x, double mu_x, double y, double mu_y, 
+    double std_x, double std_y) {
+
+    double variance_x = std_x * std_x;
+    double variance_y = std_y * std_y;
+    double term1 = 1 / (2 * M_PI * std_x * std_y);
+    double term2 = exp(-((pow(x - mu_x, 2) / (2 * variance_x)) + (pow(y - mu_y, 2) / (2 * variance_y))));
+    return term1 * term2;
 }
 
 /**
