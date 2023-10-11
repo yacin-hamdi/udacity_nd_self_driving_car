@@ -58,53 +58,6 @@ inline double dist(double x1, double y1, double x2, double y2) {
   return sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
-inline int minIdx(std::vector<double> vec) {
-    double min = 100;
-    int idx;
-    for (unsigned int i = 0; i < vec.size(); i++) {
-        if (vec[i] < min) {
-            min = vec[i];
-            idx = i;
-        }
-    }
-
-    return idx;
-}
-
-inline void lockIdx(std::vector<std::vector<double>>& vec, int idx) {
-    double lock = 1000;
-    for (unsigned int i = 0; i < vec.size(); i++) {
-        for (unsigned int j = 0; j < vec[i].size(); j++) {
-            vec[i][idx] = 1000;
-        }
-    }
-}
-
-inline void toMapCoordinate(std::vector<LandmarkObs>& observations, 
-    double xp, double yp, double theta) {
-
-    double xm, ym, xc, yc;
-    for (unsigned int j = 0; j < observations.size(); j++) {
-        xc = observations[j].x;
-        yc = observations[j].y;
-        xm = xp + (cos(theta) * xc) - (sin(theta) * yc);
-        ym = yp + (sin(theta) * xc) + (cos(theta) * yc);
-        observations[j].x = xm;
-        observations[j].y = ym;
-    }
-
-}
-
-inline double multivariateGauss(double x, double mu_x, double y, double mu_y, 
-    double std_x, double std_y) {
-
-    double variance_x = std_x * std_x;
-    double variance_y = std_y * std_y;
-    double term1 = 1 / (2 * M_PI * std_x * std_y);
-    double term2 = exp(-((pow(x - mu_x, 2) / (2 * variance_x)) + (pow(y - mu_y, 2) / (2 * variance_y))));
-    return term1 * term2;
-}
-
 /**
  * Computes the error between ground truth and particle filter data.
  * @param (gt_x, gt_y, gt_theta) x, y and theta of ground truth
