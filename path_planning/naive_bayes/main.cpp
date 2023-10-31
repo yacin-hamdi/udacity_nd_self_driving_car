@@ -46,10 +46,10 @@ vector<string> Load_Label(string file_name)
 
 int main() {
 
-    vector< vector<double> > X_train = Load_State("./train_states.txt");
-    vector< vector<double> > X_test = Load_State("./test_states.txt");
-    vector< string > Y_train = Load_Label("./train_labels.txt");
-    vector< string > Y_test = Load_Label("./test_labels.txt");
+    vector< vector<double> > X_train = Load_State("./nd013_pred_data/train_states.txt");
+    vector< vector<double> > X_test = Load_State("./nd013_pred_data/test_states.txt");
+    vector< string > Y_train = Load_Label("./nd013_pred_data/train_labels.txt");
+    vector< string > Y_test = Load_Label("./nd013_pred_data/test_labels.txt");
 
     cout << "X_train number of elements " << X_train.size() << endl;
     cout << "X_train element size " << X_train[0].size() << endl;
